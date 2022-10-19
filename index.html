@@ -8,12 +8,12 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <title>Presupuesto - Fecha</title>
+    <title>Presupuestos</title>
 </head>
 
-<body>
+<body">
     <div class="jumbotron jumbotron-fluid text-center">
-        <h1>Presupuesto de <br><span>Octubre 2022</span></h1>
+        <h1>Presupuesto de <br><span id="fecha_actual">---- ----</span></h1>
         <br>
         <span style="font-size: 45px;font-weight: bold;">+500.00</span>
         <!--label Ingresos-->
@@ -38,7 +38,8 @@
     <div class="row col-auto mb-4">
         <div class="col-sm text-center">
             <div class="mb-2">
-                <span class="badge" style="font-size: 28px; font-weight: bold;"><i class="bi bi-plus-circle  mr-3"></i>Transacción</span>
+                <span class="badge" style="font-size: 28px; font-weight: bold;"><i
+                        class="bi bi-plus-circle  mr-3"></i>Transacción</span>
             </div>
             <!--Inputs para ingresar datos-->
             <div class="col align-self-center">
@@ -49,7 +50,7 @@
                                 <option>Ingreso | Egreso</option>
                                 <option>Ingreso</option>
                                 <option>Egreso</option>
-                            </select>                              
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -70,16 +71,34 @@
                 <button type="submit" class="btn btn-secondary m-3">Agregar</button>
             </div>
         </div>
-
+        
         <div class="col-sm m-0">
             <div class="d-flex justify-content-center column">
                 <div class="btn-group btn-group col-xl-10" role="group" aria-label="">
-                    <a type="submit" class="btn btn-secondary">Agregar</a>
-                    <a type="submit" class="btn btn-secondary">Agregar</a>
+                    <a type="submit" class="btn btn-secondary">Ingresos</a>
+                    <a type="submit" class="btn btn-secondary">Egresos</a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <div class="col-xl-10">
+                    <table class="table text-center">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Salario 1</th>
+                                <td scope="row">+400.00</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Salario 2</th>
+                                <td>+300.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="./js/datos.js"></script>
 </body>
 
 </html>

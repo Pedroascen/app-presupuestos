@@ -23,8 +23,8 @@ function funcionPrincipal() {
     mostrarFecha();
     addIngresos();
     addEgresos();
+    //localStorage.removeItem('Transacciones');
     //console.log(egresos);
-    localStorage.removeItem('Transacciones');
 }
 
 function mostrarFecha() {
@@ -200,4 +200,10 @@ function getSaldo() {
     var total = document.getElementById('saldo');
     total.innerHTML = "+ " + saldo;
     return saldo;
+}
+
+function limpiarRegistros(){
+    localStorage.removeItem('Transacciones');
+    transaccion = localStorage.removeItem('Transacciones');
+    return transaccion;
 }

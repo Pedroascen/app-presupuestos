@@ -21,9 +21,10 @@ function funcionPrincipal() {
     //invocacion a funciones
     console.log(localStorage.getItem('Transacciones'));
     mostrarFecha();
-    getIngresos();
-    //console.log(transaccion);
-    //localStorage.removeItem('Transacciones');
+    addIngresos();
+    addEgresos();
+    //console.log(egresos);
+    localStorage.removeItem('Transacciones');
 }
 
 function mostrarFecha() {
@@ -56,6 +57,7 @@ function ingresarMonto() {
     monto = document.getElementById('monto').value;
     if (monto == 0 || monto == null) {
         alert('No ha ingresado ningun monto...');
+        return false;
     } else if (monto < 0) {
         alert('El monto ingresado no puede ser negativo...');
     } else {
@@ -68,7 +70,9 @@ function ingresarMonto() {
 function agregarTransaccion() {
     if (tipo == 0 || tipo == null) {
         alert('El tipo no puede ser nulo...');
-    } else {
+    }
+    //agregando ingreso 
+    else if(tipo == 1){
         ingresarDescripcion();
         if (monto > 0 && descripcion != '') {
             //se crea el registro
@@ -76,14 +80,32 @@ function agregarTransaccion() {
             //se guarda
             guardarTransaccion(transaccion);
             //se calcula y muestra el ingreso
-            getIngresos();
+            addIngresos();
             console.log(transaccion);
             console.log('Ingreso agregado: ' + ingresos);
             limpiarInputs();
             return transaccion;
-        } else {
+        }
+    //agregando egreso
+    }else if(tipo == 2){
+        ingresarDescripcion();  
+        //console.log('intenta agregar un egreso de: '+monto);
+        if(monto > 0 && monto<=saldo){
+             //se crea el registro
+             transaccion.push({ tipo: tipo, monto: monto, descripcion: descripcion });
+             //se guarda
+             guardarTransaccion(transaccion);
+             //se calcula y muestra el ingreso
+            addEgresos();
+            console.log(transaccion);
+            console.log('Egreso agregado: ' +monto);
+            limpiarInputs();
+            return transaccion;
+        }else{
+            alert('intenta agregar un egreso negativo o mayor al saldo disponible.');
             return false;
         }
+        
     }
 }
 //Se guarda la transaccion
@@ -109,31 +131,73 @@ function financial(x) {
     return Number.parseFloat(x).toFixed(2);
 }
 
-//Se calcula los ingresos
-function getIngresos() {
+//Calculo de los ingresos
+function addIngresos() {
     transacciones = JSON.parse(localStorage.getItem('Transacciones'));
     //console.log(transacciones);
-    let numeros = [];
+    let montos = [];
     if (transacciones == null) {
         console.log('No hay ingresos en el historial...');
     } else {
         for (let i = 0; i < transacciones.length; i++) {
             if (transacciones[i].tipo == 1 && transacciones[i].monto != null) {
                 let montoIngresos = parseInt(transacciones[i].monto);
-                numeros.push(montoIngresos);
+                montos.push(montoIngresos);
                 //return numeros;
             }
             //console.log(saldo);
         }
         ingresos = 0;
-        for (let i = 0; i < numeros.length; i++) {
-            ingresos += numeros[i];
+        for (let i = 0; i < montos.length; i++) {
+            ingresos += montos[i];
         }
         ingresos = financial(ingresos);
+        getSaldo(ingresos);
         //console.log(numeros);
         //console.log(ingresos);
         var total = document.getElementById('ingresos');
         total.innerHTML = "+ " + ingresos;
         return ingresos;
     }
+}
+
+//Calculo de los egresos
+function addEgresos() {
+    transacciones = JSON.parse(localStorage.getItem('Transacciones'));
+    //console.log(transacciones);
+    let montos = [];
+    if (transacciones == null) {
+        console.log('No hay egresos en el historial...');
+    } else {
+        for (let i = 0; i < transacciones.length; i++) {
+            if (transacciones[i].tipo == 2 && transacciones[i].monto != null) {
+                let montoEgresos = parseInt(transacciones[i].monto);
+                montos.push(montoEgresos);
+                console.log(montos);     
+            }
+        }
+        egresos = 0;
+        for (let i = 0; i < montos.length; i++) {
+            egresos += montos[i];
+        }
+        egresos = financial(egresos);
+        getSaldo(egresos);
+        //console.log(egresos);
+        var total = document.getElementById('egresos');
+        total.innerHTML = "- " + egresos;
+        return egresos;
+    }
+    //alert('usted cuenta con: '+saldo);
+}
+
+function getSaldo() {
+    saldo = ingresos;
+    if(egresos!=null){
+       saldo = saldo-egresos;
+        //console.log(egresos);
+    }
+    saldo = financial(saldo);
+    var total = document.getElementById('saldo');
+    total.innerHTML = "+ " + saldo;
+    return saldo;
 }
